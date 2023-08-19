@@ -1,0 +1,57 @@
+const Post = require("../models/postModel");
+
+const createPost = async (req, res) => {
+  try {
+    const { postname, location, imageUrl, userid } = req.body;
+
+    const newPost = new Post({
+      postname,
+      location,
+      imageUrl,
+      userid,
+    });
+    const post = await newPost.save();
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+const getpost = async (req, res) => {
+  try {
+    const { type } = req.body;
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayStartOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+    const yesterdayEndOfDay = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate() + 1);
+    const startOfDay = new Date( today.getFullYear(),today.getMonth(),today.getDate());
+    const endOfDay = new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1);
+    if (type === "all") {
+      const users = await Post.find();
+      res.status(200).json(users);
+    } else if (type === "today") {
+      // Retrieve posts for today from the database
+      const posts = await Post.find({
+        createdAt: { $gte: startOfDay, $lt: endOfDay },
+      });
+      res.status(200).json(posts);
+
+    }else if (type === 'yesterday') {
+       
+        // Retrieve posts for yesterday from the database
+        const posts = await Post.find({
+          createdAt: { $gte: yesterdayStartOfDay, $lt: yesterdayEndOfDay },
+        });
+        res.status(200).json(posts);
+      } 
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+module.exports = {
+  createPost,
+  getpost,
+};
