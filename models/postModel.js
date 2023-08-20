@@ -12,8 +12,12 @@ const postSchema = mongoose.Schema({
   imageUrl: String,
   
   userid: {
-    type :mongoose.Types.ObjectId,
-    required:true
+    type :mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
+  },
+  likecount: {
+    type :Number,
+    default:0
   },
 },{timestamps:true});
 
