@@ -1,4 +1,7 @@
 const Post = require("../models/postModel");
+const Like = require("../models/likeModel");
+const User = require("../models/userModel");
+
 
 const createPost = async (req, res) => {
   try {
@@ -29,13 +32,32 @@ const getpost = async (req, res) => {
     const startOfDay = new Date( today.getFullYear(),today.getMonth(),today.getDate());
     const endOfDay = new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1);
     if (type === "all") {
-      const users = await Post.find();
-      res.status(200).json(users);
+      const posts = await Post.find({})
+      .populate('userid', 'username email')
+      .exec();
+
+    const formattedPosts = posts.map(post => ({
+      _id: post._id,
+      postname: post.postname,
+      location: post.location,
+      imageUrl: post.imageUrl,
+      likecount: post.likecount,
+      userid: post.userid._id,
+      username: post.userid.username,
+      email: post.userid.email,
+      createdAt: post.createdAt,
+      imageUrl:post.imageUrl || null,
+    }));
+    res.status(200).json(formattedPosts);
+
     } else if (type === "today") {
+
       // Retrieve posts for today from the database
       const posts = await Post.find({
         createdAt: { $gte: startOfDay, $lt: endOfDay },
       });
+
+
       res.status(200).json(posts);
 
     }else if (type === 'yesterday') {
