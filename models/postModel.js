@@ -19,6 +19,10 @@ const postSchema = mongoose.Schema({
     type :Number,
     default:0
   },
+  commentcount: {
+    type :Number,
+    default:0
+  },
 },{timestamps:true});
 
 const post = mongoose.model("Posts", postSchema);
