@@ -33,20 +33,21 @@ const getpost = async (req, res) => {
     const endOfDay = new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1);
     if (type === "all") {
       const posts = await Post.find({})
-      .populate('userid', 'username email')
+      .populate('userid', 'username email imageUrl')
       .exec();
 
     const formattedPosts = posts.map(post => ({
       _id: post._id,
       postname: post.postname,
       location: post.location,
-      imageUrl: post.imageUrl,
       likecount: post.likecount,
+      commentcount: post.commentcount,
       userid: post.userid._id,
       username: post.userid.username,
       email: post.userid.email,
       createdAt: post.createdAt,
-      imageUrl:post.imageUrl || null,
+      userprofileimage:post.userid.imageUrl || null,
+      postimage:post.imageUrl || null,
     }));
     res.status(200).json(formattedPosts);
 

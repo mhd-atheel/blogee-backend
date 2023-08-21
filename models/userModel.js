@@ -29,8 +29,12 @@ const userSchema = mongoose.Schema({
         },
       },
       imageUrl: String, 
+      bio: {
+        type: String,
+        required: false,
+    },
 
-})
+},{timestamps:true})
 
 const user= mongoose.model('Users',userSchema)
 
