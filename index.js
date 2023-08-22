@@ -5,6 +5,7 @@ const userRouter= require('./routes/userRouter.js')
 const postRouter= require('./routes/postRoute.js')
 const LikeRouter= require('./routes/likeRoute.js')
 const CommentRouter= require('./routes/commentRoute.js')
+const SavedRouter= require('./routes/savePostRouter.js')
 const cors = require('cors')
 
 const app = express()
@@ -35,4 +36,5 @@ app.use('/api/users',userRouter)
 app.use('/api/posts',postRouter)
 app.use('/api/likes',LikeRouter)
 app.use('/api/comments',CommentRouter)
+app.use('/api/saved',SavedRouter)
 
