@@ -42,12 +42,23 @@ const loginUser = async (req, res) => {
     if (!validPassword) {
       res.status(200).json({ message: "wrong password" });
     }
+    // const formatedUser = user.map(e =>({
+    //   _id: e._id,
+    //   postname: e.username,
+    //   location: e.email,
+    //   likecount: e.password,
+    // }
+    // ))
 
-    // res.status(200).JSON.stringify(user)
-    //res.status(200).json({ message: "user logined" });
-    res.status(200).json(user);
+    res.status(200).json({
+      _id: user._id,
+      postname: user.username,
+      location: user.email,
+      imageUrl: user.imageUrl || null,
+      bio: user.bio || null,
+    });
   } catch (error) {
-    res.status(400).json(error);
+    res.status(500).json(error);
   }
 };
 
