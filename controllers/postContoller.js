@@ -49,7 +49,9 @@ const getpost = async (req, res) => {
       userprofileimage:post.userid.imageUrl || null,
       postimage:post.imageUrl || null,
     }));
-    res.status(200).json(formattedPosts);
+    const reversedPosts = formattedPosts.reverse(); // Reversing the array
+
+    res.status(200).json(reversedPosts);
 
     } else if (type === "today") {
 
@@ -70,7 +72,7 @@ const getpost = async (req, res) => {
         res.status(200).json(posts);
       } 
   } catch (error) {
-    res.status(400).json(error);
+    res.status(500).json(error);
   }
 };
 
