@@ -23,6 +23,8 @@ const createUser = async (req, res) => {
     });
     const user = await newuser.save();
 
+    
+
     res.status(200).json(user);
   } catch (error) {
     res.status(400).json(error);
@@ -52,8 +54,8 @@ const loginUser = async (req, res) => {
 
     res.status(200).json({
       _id: user._id,
-      postname: user.username,
-      location: user.email,
+      username: user.username,
+      email: user.email,
       imageUrl: user.imageUrl || null,
       bio: user.bio || null,
     });
@@ -64,8 +66,18 @@ const loginUser = async (req, res) => {
 
 const getUsers = async (req,res)=>{
     try {
-      const users = await User.find()
-      res.status(200).json(users);
+      const users = await User.find({})
+
+      const formetedUsers = users.map(user  =>({
+        _id: user._id,
+        postname: user.username,
+        location: user.email,
+        imageUrl: user.imageUrl || null,
+        bio: user.bio || null,
+      }))
+
+
+      res.status(200).json(formetedUsers);
     } catch (error) {
       res.status(400).json(error);
     }

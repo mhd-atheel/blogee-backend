@@ -11,8 +11,8 @@ const SavedRouter= require('./routes/savePostRouter.js');
 const cors = require('cors');
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+
+
 app.use(cors());
 app.use(express.json());
 dotenv.config();
@@ -20,32 +20,32 @@ dotenv.config();
 const port = process.env.PORT
 const url = process.env.MONGO_URI
 
-const Message = mongoose.model('Message', {
-    text: String,
-    user: String,
-  });
+// const Message = mongoose.model('Message', {
+//     text: String,
+//     user: String,
+//   });
 
-  io.on('connection', (socket) => {
-    console.log('A user connected');
-    console.log(socket.id);
-    // // Handle custom events
-    // socket.on('chat message', (message) => {
-    //   console.log('Received message:', message);
+//   io.on('connection', (socket) => {
+//     console.log('A user connected');
+//     console.log(socket.id);
+//     // // Handle custom events
+//     // socket.on('chat message', (message) => {
+//     //   console.log('Received message:', message);
   
-    //   // Save the message to MongoDB
-    //   const newMessage = new Message(message);
-    //   newMessage.save().then(() => {
-    //     // Broadcast the message to all connected clients
-    //     io.emit('chat message', message);
-    //   });
-    // });
+//     //   // Save the message to MongoDB
+//     //   const newMessage = new Message(message);
+//     //   newMessage.save().then(() => {
+//     //     // Broadcast the message to all connected clients
+//     //     io.emit('chat message', message);
+//     //   });
+//     // });
   
-    socket.on('disconnect', () => {
-      console.log('A user disconnected');
-    });
-  });
+//     socket.on('disconnect', () => {
+//       console.log('A user disconnected');
+//     });
+//   });
 
-server.listen(port,'0.0.0.0' ,()=>{
+app.listen(port ,()=>{
 
     console.log(`Successfully connected ${port}`);
 })

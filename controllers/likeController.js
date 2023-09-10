@@ -27,26 +27,43 @@ const createLike = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(like);
+    res.status(200).json({
+      _id:like._id,
+      userid:like.userid,
+      postid:like.postid,
+      likecount: likeCounts+1,
+      createdAt: like.createdAt,
+    });
   } catch (error) {
     res.status(500).json(error);
   }
 };
+
+
 
 const deletelike = async (req,res) => {
   const { userid, postid } = req.body;
   try {
     // Find the like with the specified userid and postid
     const likeToDelete = await Like.findOne({ userid, postid });
+    
 
     if (!likeToDelete) {
       return res.status(404).json({ message: "Like not found." });
     }
 
     // Delete the found like
-    await likeToDelete.remove();
+   await likeToDelete.remove();
+   const foundPost = await Post.findOne({ _id: postid });
+   const likeCounts = await foundPost.likecount;
+   await Post.findByIdAndUpdate(
+    postid,
+    { $set: { likecount: likeCounts - 1} },
+    { new: true }
+  );
 
     return res.status(200).json({ message: "Like deleted successfully." });
+    // return res.status(200).json(likeToDelete);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error." });
