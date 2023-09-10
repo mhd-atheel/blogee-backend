@@ -28,7 +28,10 @@ const userSchema = mongoose.Schema({
           message: 'Password must be at least 8 characters long and contain at least one special character',
         },
       },
-      imageUrl: String, 
+      imageUrl:{
+        required: true,
+        type: String,
+      } ,
       bio: {
         type: String,
         required: false,
