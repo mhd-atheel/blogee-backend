@@ -94,19 +94,19 @@ const getpostbyuserid = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    const posts = await Post.find(userid);
+    const posts = await Post.find(userid).populate("userid", "username email imageUrl").exec();
     const formattedPosts = posts.map((post) => ({
-      _id: post._id,
-      postname: post.postname,
-      location: post.location,
-      likecount: post.likecount,
-      commentcount: post.commentcount,
-      userid: post.userid._id,
-      username: post.userid.username,
-      email: post.userid.email,
-      createdAt: post.createdAt,
-      userprofileimage: post.userid.imageUrl || null,
-      postimage: post.imageUrl || null,
+        _id: post._id,
+        postname: post.postname,
+        location: post.location,
+        likecount: post.likecount,
+        commentcount: post.commentcount,
+        userid: post.userid._id,
+        username: post.userid.username,
+        email: post.userid.email,
+        createdAt: post.createdAt,
+        userprofileimage: post.userid.imageUrl || null,
+        postimage: post.imageUrl || null,
     }));
 
     res.status(200).json(formattedPosts);
