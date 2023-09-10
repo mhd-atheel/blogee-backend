@@ -108,8 +108,9 @@ const getpostbyuserid = async (req, res) => {
         userprofileimage: post.userid.imageUrl || null,
         postimage: post.imageUrl || null,
     }));
+    const reversedPosts = formattedPosts.reverse(); // Reversing the array
 
-    res.status(200).json(formattedPosts);
+    res.status(200).json(reversedPosts);
   } catch (error) {
     res.status(500).json(error);
   }
