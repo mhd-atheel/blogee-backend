@@ -95,8 +95,21 @@ const getpostbyuserid = async (req, res) => {
     }
 
     const posts = await Post.find(userid);
+    const formattedPosts = posts.map((post) => ({
+      _id: post._id,
+      postname: post.postname,
+      location: post.location,
+      likecount: post.likecount,
+      commentcount: post.commentcount,
+      userid: post.userid._id,
+      username: post.userid.username,
+      email: post.userid.email,
+      createdAt: post.createdAt,
+      userprofileimage: post.userid.imageUrl || null,
+      postimage: post.imageUrl || null,
+    }));
 
-    res.status(200).json(posts);
+    res.status(200).json(formattedPosts);
   } catch (error) {
     res.status(500).json(error);
   }
